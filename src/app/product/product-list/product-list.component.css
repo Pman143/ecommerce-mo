@@ -1,0 +1,14 @@
+.example-card {
+  max-width: 250px;
+  border-radius: 10px;
+  background-color: whitesmoke;
+  margin-right: 30px;
+  margin-bottom: 50px;
+}
+
+.image-url {
+  max-width: 200px;
+  max-height: 200px;
+  border-radius: 10px;
+  cursor: pointer;
+}

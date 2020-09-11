@@ -1,0 +1,18 @@
+<div class="container">
+  <h1>Available Products: {{products?.length}}</h1>
+  <br>
+  <div class="row">
+    <mat-card class="example-card" *ngFor="let product of products; let index = i" (click)="onViewProduct(product)">
+      <mat-card-header>
+        <mat-card-title>{{product.productName}}</mat-card-title>
+      </mat-card-header>
+      <img [src]="product.productImageUrl" alt="" class="image-url">
+      <mat-card-content>
+        <button (click)="onAddToCart(product)" mat-icon-button>
+          <mat-icon>shopping_cart</mat-icon>
+        </button>
+        <h2 class="text-info">{{product.productPrice | currency: 'ZAR' : 'R'}}</h2>
+      </mat-card-content>
+    </mat-card>
+  </div>
+</div>

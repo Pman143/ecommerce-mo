@@ -1,0 +1,60 @@
+<div class="container">
+  <div class="row">
+    <h1 class="text-center text-primary">Add New Product.</h1>
+
+    <div class="col-sm-12 col-md-12 col-lg-12">
+      <form [formGroup]="productForm" (ngSubmit)="onSubmitForm(productForm)">
+        <input type="text" formControlName="productId" hidden>
+        <input type="text" formControlName="isInCart" hidden>
+
+        <mat-form-field [hintLabel]="'Enter Product Name.'" class="field-width">
+          <mat-label>Product Name</mat-label>
+          <input matInput type="text" formControlName="productName">
+          <mat-error *ngIf="productForm.get('productName').errors?.required">
+            {{fullNameRequiredMessage}}</mat-error>
+        </mat-form-field>
+        <br><br>
+
+        <mat-form-field [hintLabel]="'Enter Product Price.'" class="field-width">
+          <mat-label>Product Price</mat-label>
+          <input matInput type="text" formControlName="productPrice">
+          <mat-error *ngIf="productForm.get('productPrice').errors?.required">
+            {{fullNameRequiredMessage}}</mat-error>
+        </mat-form-field>
+        <br><br>
+
+        <mat-form-field class="field-width">
+          <mat-label>Product Description</mat-label>
+          <textarea matInput type="text" formControlName="productDescription"></textarea>
+          <mat-hint align="start">{{'Enter telephone number'}}</mat-hint>
+          <mat-error *ngIf="productForm.get('productDescription').errors?.required">
+            {{telephoneNumberRequiredMessage}}</mat-error>
+        </mat-form-field>
+        <br><br>
+
+        <mat-form-field class="field-width">
+          <mat-label>Product Image Url</mat-label>
+          <input matInput type="text" formControlName="productImageUrl">
+          <mat-hint align="start">{{'Enter product image url'}}</mat-hint>
+          <mat-error *ngIf="productForm.get('productImageUrl').errors?.required">
+            {{telephoneNumberRequiredMessage}}</mat-error>
+        </mat-form-field>
+        <br>
+
+        <img *ngIf="productForm.get('productImageUrl').value"
+             [src]="productForm.get('productImageUrl').value"
+             alt="" style="width: 200px;height: 200px;">
+        <hr *ngIf="productForm.get('productImageUrl').value">
+        <button [hidden]="isSubmitted"
+                [disabled]="productForm.invalid"
+                class="btn btn-primary submit-button" type="submit">Submit
+        </button>
+        <br>
+        <br>
+        <div style="margin-left: 5%;" *ngIf="isSubmitted">
+          <mat-spinner [strokeWidth]="5" [diameter]="40"></mat-spinner>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
