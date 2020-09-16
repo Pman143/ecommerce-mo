@@ -13,7 +13,9 @@ export class AppComponent {
 
   constructor(private productService: ProductService, private router: Router) {
     this.productService.fetchProductsFromFirebase().subscribe();
-    this.productService.retrieveFromCart().subscribe((res) => {
+    this.productService.retrieveFromCart().subscribe();
+    this.productService.cart$.subscribe(res => {
+      console.log('My Products ',  res);
       this.cartCount = res.length;
     });
   }

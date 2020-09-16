@@ -3,6 +3,8 @@ import {Product} from '../interface/product';
 import {BehaviorSubject} from 'rxjs';
 import {HttpClient} from '@angular/common/http';
 import {map, tap} from 'rxjs/operators';
+import {Router} from '@angular/router';
+import {MatSnackBar} from '@angular/material/snack-bar';
 
 const FIREBASE_URL = 'https://e-commerce-app-mo.firebaseio.com/product.json';
 
@@ -16,7 +18,17 @@ export class ProductService {
   private cartSubject = new BehaviorSubject<Product[]>([]);
   cart$ = this.cartSubject.asObservable();
 
-  constructor(private http: HttpClient) {
+  constructor(private http: HttpClient, private snackBar: MatSnackBar) {
+  }
+
+  saveCartProducts(res: Product[]) {
+    console.log(res);
+    if (res) {
+      this.cartSubject.next(res);
+      console.warn(res);
+    } else {
+      console.log('Nothing ', this.cartSubject.getValue());
+    }
   }
 
   addProduct(product: Product) {
@@ -59,9 +71,15 @@ export class ProductService {
   addProductToCart(product: Product) {
     return this.http.patch(`https://e-commerce-app-mo.firebaseio.com/product/${product.productKey}.json`, {isInCart: true}).pipe(
       tap(res => {
-        const cart: Product[] = [];
-        cart.push(product);
-      //  this.cartSubject.next(cart);
+        this.retrieveFromCart().subscribe();
+      })
+    );
+  }
+
+  removeProductFromCart(product: Product) {
+    return this.http.patch(`https://e-commerce-app-mo.firebaseio.com/product/${product.productKey}.json`, {isInCart: false}).pipe(
+      tap(res => {
+        this.retrieveFromCart().subscribe();
       })
     );
   }
@@ -86,7 +104,15 @@ export class ProductService {
       }
       return prod;
     }), tap(res => {
-      this.cartSubject.next(res);
+      if (res) {
+        this.saveCartProducts(res);
+      }
     }));
+  }
+
+  openSnackBar(message: string, action: string) {
+    this.snackBar.open(message, action, {
+      duration: 3000,
+    });
   }
 }

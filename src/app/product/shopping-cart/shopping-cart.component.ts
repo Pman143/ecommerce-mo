@@ -14,13 +14,16 @@ export class ShoppingCartComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.productService.retrieveFromCart().subscribe((res) => {
+    this.productService.cart$.subscribe((res) => {
       console.log(res);
       this.productsInCart = res;
     });
   }
 
-  onAddToCart(product: Product) {
-
+  onRemoveProductFromCart(product: Product) {
+    this.productService.removeProductFromCart(product).subscribe((res) => {
+      console.log(res);
+      this.productService.openSnackBar('Product removed successfully.', '');
+    });
   }
 }
