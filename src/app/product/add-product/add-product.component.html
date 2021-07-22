@@ -26,7 +26,7 @@
         <mat-form-field class="field-width">
           <mat-label>Product Description</mat-label>
           <textarea matInput type="text" formControlName="productDescription"></textarea>
-          <mat-hint align="start">{{'Enter telephone number'}}</mat-hint>
+          <mat-hint align="start">{{'Enter description'}}</mat-hint>
           <mat-error *ngIf="productForm.get('productDescription').errors?.required">
             {{descriptionRequiredMessage}}</mat-error>
         </mat-form-field>
