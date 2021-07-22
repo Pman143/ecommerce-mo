@@ -31,7 +31,5 @@
     </mat-card>
   </div>
 
-  <div class="row" *ngIf="!productsInCart.length">
-    <h1 style="font-size: 40px; font-weight: bold; text-align: center">No Products In Your Cart.</h1>
-  </div>
+  <h1 *ngIf="!productsInCart.length" style="font-size: 30px; text-align: center">No Products In Your Cart.</h1>
 </div>

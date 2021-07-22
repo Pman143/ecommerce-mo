@@ -28,7 +28,7 @@
           <textarea matInput type="text" formControlName="productDescription"></textarea>
           <mat-hint align="start">{{'Enter telephone number'}}</mat-hint>
           <mat-error *ngIf="productForm.get('productDescription').errors?.required">
-            {{telephoneNumberRequiredMessage}}</mat-error>
+            {{descriptionRequiredMessage}}</mat-error>
         </mat-form-field>
         <br><br>
 
@@ -37,7 +37,7 @@
           <input matInput type="text" formControlName="productImageUrl">
           <mat-hint align="start">{{'Enter product image url'}}</mat-hint>
           <mat-error *ngIf="productForm.get('productImageUrl').errors?.required">
-            {{telephoneNumberRequiredMessage}}</mat-error>
+            {{imageUrlRequiredMessage}}</mat-error>
         </mat-form-field>
         <br>
 
@@ -45,6 +45,7 @@
              [src]="productForm.get('productImageUrl').value"
              alt="" style="width: 200px;height: 200px;">
         <hr *ngIf="productForm.get('productImageUrl').value">
+        <br>
         <button [hidden]="isSubmitted"
                 [disabled]="productForm.invalid"
                 class="btn btn-primary submit-button" type="submit">Submit

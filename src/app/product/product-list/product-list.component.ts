@@ -29,8 +29,13 @@ export class ProductListComponent implements OnInit {
 
   onAddToCart(product: Product) {
     this.productService.addProductToCart(product).subscribe(res => {
-      console.log(res);
       this.productService.openSnackBar('Added product successfully to cart', '');
+    });
+  }
+
+  deleteProduct(product: Product) {
+    this.productService.deleteProduct(product.productKey).subscribe(res => {
+      this.productService.openSnackBar('Product was deleted successfully', '');
     });
   }
 

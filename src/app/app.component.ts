@@ -8,14 +8,12 @@ import {Router} from '@angular/router';
   styleUrls: ['./app.component.css']
 })
 export class AppComponent {
-  title = 'e-commerce';
   cartCount = 0;
 
   constructor(private productService: ProductService, private router: Router) {
     this.productService.fetchProductsFromFirebase().subscribe();
     this.productService.retrieveFromCart().subscribe();
     this.productService.cart$.subscribe(res => {
-      console.log('My Products ',  res);
       this.cartCount = res.length;
     });
   }

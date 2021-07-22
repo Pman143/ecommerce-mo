@@ -18,7 +18,6 @@ export class EditProductComponent implements OnInit {
   ngOnInit(): void {
     this.productKey = this.route.snapshot.paramMap.get('key').toString();
     this.productService.fetchProductById(this.productKey).subscribe((res: any) => {
-      console.log(res);
       this.displayedProduct = res;
     });
   }

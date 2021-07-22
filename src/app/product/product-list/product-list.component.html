@@ -1,5 +1,5 @@
 <div class="container">
-  <h1 style="font-size: 30px;">Available Products: {{products?.length}}</h1>
+  <h1 style="font-size: 30px;text-align: center">Available Products: {{products?.length}}</h1>
   <br>
   <div class="row">
     <mat-card class="example-card" *ngFor="let product of products; let index = i">
@@ -14,9 +14,18 @@
       </mat-card-content>
 
       <mat-card-footer>
-        <button (click)="onAddToCart(product)" mat-icon-button>
-          <mat-icon color="primary">shopping_cart</mat-icon>
-        </button>
+        <div class="row">
+          <div class="col-6">
+            <button (click)="onAddToCart(product)" mat-icon-button>
+              <mat-icon color="primary">shopping_cart</mat-icon>
+            </button>
+          </div>
+          <div class="col-6">
+            <button (click)="deleteProduct(product)" mat-icon-button>
+              <mat-icon color="warn">delete</mat-icon>
+            </button>
+          </div>
+        </div>
       </mat-card-footer>
     </mat-card>
   </div>

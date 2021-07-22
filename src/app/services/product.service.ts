@@ -1,9 +1,8 @@
 import {Injectable} from '@angular/core';
 import {Product} from '../interface/product';
-import {BehaviorSubject} from 'rxjs';
+import {BehaviorSubject, Observable} from 'rxjs';
 import {HttpClient} from '@angular/common/http';
 import {map, tap} from 'rxjs/operators';
-import {Router} from '@angular/router';
 import {MatSnackBar} from '@angular/material/snack-bar';
 
 const FIREBASE_URL = 'https://e-commerce-app-mo.firebaseio.com/product.json';
@@ -22,18 +21,15 @@ export class ProductService {
   }
 
   saveCartProducts(res: Product[]) {
-    console.log(res);
     if (res) {
       this.cartSubject.next(res);
-      console.warn(res);
-    } else {
-      console.log('Nothing ', this.cartSubject.getValue());
     }
   }
 
   addProduct(product: Product) {
-    return this.http.post(FIREBASE_URL, product).pipe(tap(res => {
-      //  this.productsSubject.next();
+    return this.http.post(FIREBASE_URL, product).pipe(tap((res: { name: string }) => {
+      product.productKey = res.name;
+      this.productsSubject.getValue().push(product);
     }));
   }
 
@@ -49,7 +45,7 @@ export class ProductService {
             productPrice: resData[key].productPrice,
             productImageUrl: resData[key].productImageUrl,
             productDescription: resData[key].productDescription,
-            isInCart: resData[key].isInCart ? true : false
+            isInCart: !!resData[key].isInCart
           });
         }
       }
@@ -59,13 +55,17 @@ export class ProductService {
     }));
   }
 
-  fetchProductById(productKey: string) {
-    console.log(productKey);
-    // return this.productsSubject.getValue().slice().find(product => product.productId === productId);
-    return this.http.get<{ [key: string]: Product }>(`https://e-commerce-app-mo.firebaseio.com/product/${productKey}.json`)
-      .pipe(map(resData => {
-        return resData;
-      }), tap());
+  fetchProductById(productKey: string, firebaseCall = false) {
+    if (firebaseCall) {
+      return new Observable((observer) => {
+        observer.next(this.productsSubject.getValue().slice().find(product => product.productKey === productKey));
+      });
+    } else {
+      return this.http.get<{ [key: string]: Product }>(`https://e-commerce-app-mo.firebaseio.com/product/${productKey}.json`)
+        .pipe(map(resData => {
+          return resData;
+        }), tap());
+    }
   }
 
   addProductToCart(product: Product) {
@@ -108,6 +108,14 @@ export class ProductService {
         this.saveCartProducts(res);
       }
     }));
+  }
+
+  deleteProduct(productKey: string) {
+    return this.http.delete(`https://e-commerce-app-mo.firebaseio.com/product/${productKey}.json`).pipe(
+      tap((res) => {
+        this.productsSubject.getValue().splice(this.productsSubject.getValue().findIndex(prod => prod.productKey === productKey), 1);
+      })
+    );
   }
 
   openSnackBar(message: string, action: string) {

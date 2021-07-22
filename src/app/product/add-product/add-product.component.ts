@@ -2,6 +2,7 @@ import {Component, OnInit} from '@angular/core';
 import {FormBuilder, FormControl, FormGroup, Validators} from '@angular/forms';
 import {ProductService} from '../../services/product.service';
 import {MatSnackBar} from '@angular/material/snack-bar';
+import {Router} from '@angular/router';
 
 @Component({
   selector: 'app-add-product',
@@ -12,9 +13,8 @@ export class AddProductComponent implements OnInit {
 
   productForm: FormGroup;
   fullNameRequiredMessage = 'Full name is required.';
-  telephoneNumberRequiredMessage = 'Telephone number is required.';
-  idNumberRequiredMessage = 'Id number is required.';
-  idIncorrectMessage = 'This Id number is not valid.';
+  descriptionRequiredMessage = 'Description number is required.';
+  imageUrlRequiredMessage = 'Image url is required.';
   isSubmitted = false;
   productId: string;
   addedProduct = false;
@@ -22,6 +22,7 @@ export class AddProductComponent implements OnInit {
   constructor(
     private fb: FormBuilder,
     private productService: ProductService,
+    private router: Router,
     private snackBar: MatSnackBar) {
     this.productId = (Math.floor(Math.random() * 1000) + 1).toString();
   }
@@ -45,13 +46,12 @@ export class AddProductComponent implements OnInit {
     if (form.invalid) {
       return;
     }
-    console.log(form.value);
     this.isSubmitted = true;
     this.productService.addProduct(form.value).subscribe(response => {
-      console.log(response);
       if (response.hasOwnProperty('name')) {
         this.addedProduct = true;
         this.snackBar.open('Added Product Successfully');
+        this.router.navigate(['']);
         this.productForm.reset();
         this.productForm.clearValidators();
       }
